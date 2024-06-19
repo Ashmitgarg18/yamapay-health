@@ -1,21 +1,21 @@
-// src/utils/mongodb.js
 import { MongoClient } from 'mongodb';
 
-const client = new MongoClient(process.env.MONGODB_URI, {
+const uri = process.env.MONGODB_URI;
+
+const options = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+  tls: true,
+  tlsAllowInvalidCertificates: true,
+};
 
-async function connectToDatabase() {
-  try {
-    if (!client.isConnected()) await client.connect();
-    console.log('Connected to MongoDB');
-    const db = client.db(); // No need to specify the database name again here
-    return { db, client };
-  } catch (error) {
-    console.error('Failed to connect to MongoDB', error);
-    throw new Error('Failed to connect to MongoDB');
-  }
+let client;
+let clientPromise;
+
+if (!client) {
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
+  console.log('Connected to MongoDB');
 }
 
-export { connectToDatabase };
+export { clientPromise };

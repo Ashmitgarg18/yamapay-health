@@ -1,3 +1,4 @@
+// src/components/Login.js
 import { useState } from 'react';
 
 const Login = () => {
@@ -7,7 +8,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/user/login', {
+      const response = await fetch('/api/user/login', { // Updated endpoint
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

@@ -1,3 +1,4 @@
+// src/components/Register.js
 import { useState } from 'react';
 
 const Register = () => {
@@ -7,7 +8,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/user/register', {
+      const response = await fetch('/api/user/register', { // Updated endpoint
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
