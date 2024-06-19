@@ -1,5 +1,6 @@
 // src/components/Register.js
 import { useState } from 'react';
+import styles from './Auth.module.css'; // Import the CSS module
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -8,7 +9,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/user/register', { // Updated endpoint
+      const response = await fetch('/api/user/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -29,11 +30,28 @@ const Register = () => {
   };
 
   return (
-    <form onSubmit={handleRegister}>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-      <button type="submit">Register</button>
-    </form>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Register</h2>
+      <form onSubmit={handleRegister} className={styles.form}>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          required
+          className={styles.input}
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+          className={styles.input}
+        />
+        <button type="submit" className={styles.button}>Register</button>
+      </form>
+    </div>
   );
 };
 

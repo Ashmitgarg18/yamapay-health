@@ -1,5 +1,6 @@
 // src/components/Login.js
 import { useState } from 'react';
+import styles from './Auth.module.css'; // Import the CSS module
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -8,7 +9,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/user/login', { // Updated endpoint
+      const response = await fetch('/api/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -31,11 +32,28 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" required />
-      <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" required />
-      <button type="submit">Login</button>
-    </form>
+    <div className={styles.container}>
+      <h2 className={styles.title}>Login</h2>
+      <form onSubmit={handleLogin} className={styles.form}>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          required
+          className={styles.input}
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          required
+          className={styles.input}
+        />
+        <button type="submit" className={styles.button}>Login</button>
+      </form>
+    </div>
   );
 };
 
