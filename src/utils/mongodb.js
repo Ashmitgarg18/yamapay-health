@@ -14,8 +14,15 @@ let clientPromise;
 
 if (!client) {
   client = new MongoClient(uri, options);
-  clientPromise = client.connect();
-  console.log('Connected to MongoDB');
+  clientPromise = client.connect()
+    .then(() => {
+      console.log('Connected to MongoDB');
+      return client;
+    })
+    .catch((error) => {
+      console.error('Failed to connect to MongoDB', error);
+      throw error;
+    });
 }
 
 export { clientPromise };

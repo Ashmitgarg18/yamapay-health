@@ -1,0 +1,47 @@
+.commentSection {
+  margin-top: 20px;
+  padding: 20px;
+  border-top: 1px solid #ccc;
+}
+
+.commentList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment {
+  margin-bottom: 15px;
+}
+
+.reply {
+  margin-left: 20px;
+  margin-top: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.commentForm {
+  margin-top: 20px;
+}
+
+.textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
