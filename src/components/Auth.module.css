@@ -6,27 +6,21 @@
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
 .title {
   text-align: center;
   margin-bottom: 20px;
-  width: 100%;
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  width: 100%;
 }
 
 .formGroup {
+  margin-bottom: 10px; /* Reduced margin-bottom */
   position: relative;
-  margin-bottom: 15px;
-  width: 100%;
 }
 
 .input {
@@ -38,20 +32,22 @@
   box-sizing: border-box;
 }
 
-.inputError {
+.input.error {
   border-color: red;
 }
 
-.errorMessage {
+.error {
   color: red;
   font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px; /* Adjusted margin-bottom */
   display: flex;
   align-items: center;
-  margin-top: 5px;
 }
 
 .errorIcon {
   margin-right: 5px;
+  color: red;
 }
 
 .button {
@@ -63,8 +59,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 100%;
-  box-sizing: border-box;
+  margin-top: 10px;
 }
 
 .button:hover {

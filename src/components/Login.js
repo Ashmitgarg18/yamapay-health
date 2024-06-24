@@ -1,5 +1,7 @@
+// src/components/Login.js
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { FaExclamationCircle } from 'react-icons/fa';
 import styles from './Auth.module.css';
 
 const Login = () => {
@@ -7,32 +9,27 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [error, setError] = useState('');
   const router = useRouter();
 
   const validateEmail = (email) => {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return re.test(String(email).toLowerCase());
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let valid = true;
+    setEmailError('');
+    setPasswordError('');
+    setError('');
 
     if (!validateEmail(email)) {
       setEmailError('Invalid email address');
-      valid = false;
-    } else {
-      setEmailError('');
+      return;
     }
 
     if (password.length < 8) {
       setPasswordError('Password must be at least 8 characters long');
-      valid = false;
-    } else {
-      setPasswordError('');
-    }
-
-    if (!valid) {
       return;
     }
 
@@ -43,17 +40,18 @@ const Login = () => {
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        const data = await response.json();
         localStorage.setItem('token', data.token);
         alert('User logged in');
-        router.push('/about'); // Redirect to the about page or any other page
+        router.push('/about');
       } else {
-        alert('Login failed');
+        setError(data.message || 'Login failed');
       }
     } catch (error) {
       console.error('An unexpected error occurred:', error);
-      alert('An unexpected error occurred');
+      setError('An unexpected error occurred');
     }
   };
 
@@ -65,24 +63,40 @@ const Login = () => {
           <input
             type="email"
             placeholder="Email"
-            className={styles.input}
+            className={`${styles.input} ${emailError ? styles.error : ''}`}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          {emailError && <p className={styles.error}>{emailError}</p>}
+          {emailError && (
+            <div className={styles.error}>
+              <FaExclamationCircle className={styles.errorIcon} />
+              {emailError}
+            </div>
+          )}
         </div>
         <div className={styles.formGroup}>
           <input
             type="password"
             placeholder="Password"
-            className={styles.input}
+            className={`${styles.input} ${passwordError ? styles.error : ''}`}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {passwordError && <p className={styles.error}>{passwordError}</p>}
+          {passwordError && (
+            <div className={styles.error}>
+              <FaExclamationCircle className={styles.errorIcon} />
+              {passwordError}
+            </div>
+          )}
         </div>
+        {error && (
+          <div className={styles.error}>
+            <FaExclamationCircle className={styles.errorIcon} />
+            {error}
+          </div>
+        )}
         <button type="submit" className={styles.button}>Login</button>
       </form>
     </div>
