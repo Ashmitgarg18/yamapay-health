@@ -1,10 +1,23 @@
-// src/components/Register.js
 import { useState } from 'react';
-import styles from './Auth.module.css'; // Import the CSS module
+import { useRouter } from 'next/router';
+import { FaExclamationCircle } from 'react-icons/fa';
+import styles from './Auth.module.css';
 
 const Register = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const router = useRouter();
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    setError(''); // Reset error when user starts typing
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    setError(''); // Reset error when user starts typing
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -12,20 +25,21 @@ const Register = () => {
       const response = await fetch('/api/user/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
         console.error('Registration failed:', errorData.message);
-        alert('Registration failed');
+        setError(errorData.message);
         return;
       }
 
       alert('User registered');
+      router.push('/login'); // Redirect to login page after successful registration
     } catch (error) {
       console.error('An unexpected error occurred:', error);
-      alert('An unexpected error occurred');
+      setError('An unexpected error occurred');
     }
   };
 
@@ -33,22 +47,38 @@ const Register = () => {
     <div className={styles.container}>
       <h2 className={styles.title}>Register</h2>
       <form onSubmit={handleRegister} className={styles.form}>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          placeholder="Username"
-          required
-          className={styles.input}
-        />
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-          required
-          className={styles.input}
-        />
+        <div className={styles.formGroup}>
+          <input
+            type="email"
+            value={email}
+            onChange={handleEmailChange}
+            placeholder="Email"
+            required
+            className={`${styles.input} ${error ? styles.inputError : ''}`}
+          />
+          {error && error.includes('Email') && (
+            <div className={styles.errorMessage}>
+              <FaExclamationCircle className={styles.errorIcon} />
+              {error}
+            </div>
+          )}
+        </div>
+        <div className={styles.formGroup}>
+          <input
+            type="password"
+            value={password}
+            onChange={handlePasswordChange}
+            placeholder="Password"
+            required
+            className={`${styles.input} ${error ? styles.inputError : ''}`}
+          />
+          {error && !error.includes('Email') && (
+            <div className={styles.errorMessage}>
+              <FaExclamationCircle className={styles.errorIcon} />
+              {error}
+            </div>
+          )}
+        </div>
         <button type="submit" className={styles.button}>Register</button>
       </form>
     </div>

@@ -1,4 +1,3 @@
-// src/pages/api/user/login.js
 import { clientPromise } from '../../../utils/mongodb';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -13,12 +12,18 @@ const handler = async (req, res) => {
     const db1 = database.db("auth");
 
     if (method === 'POST') {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
 
       console.log('Login endpoint hit');
-      const user = await db1.collection('users').findOne({ username });
-      if (!user || !(await bcrypt.compare(password, user.password))) {
-        console.log('Invalid credentials');
+      const user = await db1.collection('users').findOne({ email });
+      if (!user) {
+        console.log('User not found');
+        return res.status(400).json({ message: 'Invalid credentials' });
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
+        console.log('Invalid password');
         return res.status(400).json({ message: 'Invalid credentials' });
       }
 
