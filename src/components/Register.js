@@ -1,7 +1,7 @@
-// src/components/Register.js
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { FaExclamationCircle } from 'react-icons/fa';
+import Link from 'next/link';
 import styles from './Auth.module.css'; // Import the CSS module
 
 const Register = () => {
@@ -10,10 +10,11 @@ const Register = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [serverError, setServerError] = useState(''); // State for server error messages
+  const [successMessage, setSuccessMessage] = useState(''); // State for success message
   const router = useRouter();
 
   const validateEmail = (email) => {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
     return re.test(String(email).toLowerCase());
   };
 
@@ -50,66 +51,74 @@ const Register = () => {
 
       if (!response.ok) {
         if (data.message === 'Email already exists') {
-          setEmailError('Email already exists'); // Set specific email error message
+          setEmailError('Email already exists');
         } else {
-          setServerError('Registration failed'); // Set generic server error message
+          setServerError('Registration failed');
         }
         return;
       }
 
-      alert('User registered successfully!');
-      router.push('/login'); // Redirect to the login page
+      setSuccessMessage('User registered successfully! Redirecting to login...');
+      setTimeout(() => {
+        router.push('/login');
+      }, 2000); // 2 seconds delay before redirecting
     } catch (error) {
       console.error('An unexpected error occurred:', error);
-      setServerError('An unexpected error occurred'); // Set generic server error message
+      setServerError('An unexpected error occurred');
     }
   };
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Register</h2>
-      <form onSubmit={handleRegister} className={styles.form} noValidate>
-        <div className={styles.formGroup}>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-            className={`${styles.input} ${emailError ? styles.error : ''}`}
-          />
-          {emailError && (
-            <div className={styles.error}>
-              <FaExclamationCircle className={styles.errorIcon} />
-              {emailError}
-            </div>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-            className={`${styles.input} ${passwordError ? styles.error : ''}`}
-          />
-          {passwordError && (
-            <div className={styles.error}>
-              <FaExclamationCircle className={styles.errorIcon} />
-              {passwordError}
-            </div>
-          )}
-        </div>
-        {serverError && (
-          <div className={styles.error}>
-            <FaExclamationCircle className={styles.errorIcon} />
-            {serverError}
+    <>
+      <div className={styles.container}>
+        <h2 className={styles.title}>Register</h2>
+        <form onSubmit={handleRegister} className={styles.form} noValidate>
+          <div className={styles.formGroup}>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className={`${styles.input} ${emailError ? styles.error : ''}`}
+            />
+            {emailError && (
+              <div className={styles.error}>
+                <FaExclamationCircle className={styles.errorIcon} />
+                {emailError}
+              </div>
+            )}
           </div>
-        )}
-        <button type="submit" className={styles.button}>Register</button>
-      </form>
-    </div>
+          <div className={styles.formGroup}>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className={`${styles.input} ${passwordError ? styles.error : ''}`}
+            />
+            {passwordError && (
+              <div className={styles.error}>
+                <FaExclamationCircle className={styles.errorIcon} />
+                {passwordError}
+              </div>
+            )}
+          </div>
+          {serverError && (
+            <div className={styles.error}>
+              <FaExclamationCircle className={styles.errorIcon} />
+              {serverError}
+            </div>
+          )}
+          <button type="submit" className={styles.button}>Register</button>
+        </form>
+      </div>
+      {successMessage && <div className={styles.success}>{successMessage}</div>}
+      <p className={styles.switchAuth}>
+        Already have an account? <Link href="/login">Sign in here</Link>
+      </p>
+    </>
   );
 };
 

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./CommentSection.module.css";
+import Link from 'next/link';
 
 const CommentSection = () => {
   const [comments, setComments] = useState([]);
@@ -186,7 +187,7 @@ const CommentSection = () => {
           </button>
         </div>
       ) : (
-        <p>Please sign in to post a comment.</p>
+        <p>Please <Link href="/login">log in</Link> to post a comment.</p>
       )}
     </div>
   );

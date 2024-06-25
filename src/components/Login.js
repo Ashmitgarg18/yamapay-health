@@ -1,37 +1,18 @@
-// src/components/Login.js
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { FaExclamationCircle } from 'react-icons/fa';
-import styles from './Auth.module.css';
+import Link from 'next/link';
+import styles from './Auth.module.css'; // Import the CSS module
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const validateEmail = (email) => {
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return emailPattern.test(email);
-  };
-
-  const handleSubmit = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setEmailError('');
-    setPasswordError('');
     setError('');
-
-    if (!validateEmail(email)) {
-      setEmailError('Invalid email address');
-      return;
-    }
-
-    if (password.length < 8) {
-      setPasswordError('Password must be at least 8 characters long');
-      return;
-    }
 
     try {
       const response = await fetch('/api/user/login', {
@@ -44,7 +25,6 @@ const Login = () => {
 
       if (response.ok) {
         localStorage.setItem('token', data.token);
-        alert('User logged in');
         router.push('/about');
       } else {
         setError(data.message || 'Login failed');
@@ -56,50 +36,43 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Login</h2>
-      <form className={styles.form} onSubmit={handleSubmit} noValidate>
-        <div className={styles.formGroup}>
-          <input
-            type="email"
-            placeholder="Email"
-            className={`${styles.input} ${emailError ? styles.error : ''}`}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          {emailError && (
-            <div className={styles.error}>
-              <FaExclamationCircle className={styles.errorIcon} />
-              {emailError}
-            </div>
-          )}
-        </div>
-        <div className={styles.formGroup}>
-          <input
-            type="password"
-            placeholder="Password"
-            className={`${styles.input} ${passwordError ? styles.error : ''}`}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          {passwordError && (
-            <div className={styles.error}>
-              <FaExclamationCircle className={styles.errorIcon} />
-              {passwordError}
-            </div>
-          )}
-        </div>
-        {error && (
-          <div className={styles.error}>
-            <FaExclamationCircle className={styles.errorIcon} />
-            {error}
+    <>
+      <div className={styles.container}>
+        <h2 className={styles.title}>Login</h2>
+        <form onSubmit={handleLogin} className={styles.form} noValidate>
+          <div className={styles.formGroup}>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className={styles.input}
+            />
           </div>
-        )}
-        <button type="submit" className={styles.button}>Login</button>
-      </form>
-    </div>
+          <div className={styles.formGroup}>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className={styles.input}
+            />
+          </div>
+          {error && (
+            <div className={styles.error}>
+              <FaExclamationCircle className={styles.errorIcon} />
+              {error}
+            </div>
+          )}
+          <button type="submit" className={styles.button}>Login</button>
+        </form>
+      </div>
+      <p className={styles.switchAuth}>
+        Don't have an account? <Link href="/register">Register here</Link>
+      </p>
+    </>
   );
 };
 

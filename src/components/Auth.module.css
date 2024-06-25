@@ -65,3 +65,31 @@
 .button:hover {
   background-color: #0056b3;
 }
+
+.success {
+  color: green;
+  font-size: 16px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+
+.switchAuth {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.switchAuth a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.switchAuth a:hover {
+  color: #0056b3;
+}
+
+
+
