@@ -2,6 +2,9 @@
   margin-top: 20px;
   padding: 20px;
   border-top: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .commentList {
@@ -11,11 +14,30 @@
 
 .comment {
   margin-bottom: 15px;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.comment p {
+  margin: 0 0 10px 0;
+}
+
+.replyList {
+  list-style-type: none;
+  padding: 0;
+  padding-left: 20px; /* Indentation for replies */
+  margin-top: 10px;
 }
 
 .reply {
-  margin-left: 20px;
   margin-top: 5px;
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #f1f1f1;
   font-size: 0.9em;
   color: #555;
 }
@@ -25,23 +47,42 @@
 }
 
 .textarea {
-  width: 100%;
+  width: calc(100% - 22px);
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  resize: none;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .button {
-  padding: 10px 20px;
+  padding: 8px 12px; /* Adjusted padding */
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px; /* More rounded corners */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  font-size: 0.9em; /* Adjusted font size */
+  text-align: center;
 }
 
 .button:hover {
   background-color: #0056b3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.replyButtonContainer {
+  margin-top: 10px;
+}
+
+.replyInputContainer {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.replyInputContainer .textarea {
+  margin-bottom: 5px;
 }
